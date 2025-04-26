@@ -3,3 +3,5 @@ build/
 
 # Qt-files
 *.user
+Makefile
+.qmake.stash

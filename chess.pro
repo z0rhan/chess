@@ -9,27 +9,27 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bishop.cpp \
-    chess.cpp \
-    chessboard.cpp \
-    chesspiece.cpp \
-    knight.cpp \
-    main.cpp \
-    pawn.cpp \
-    king.cpp \
-    queen.cpp \
-    rook.cpp
+    src/bishop.cpp \
+    src/chess.cpp \
+    src/chessboard.cpp \
+    src/chesspiece.cpp \
+    src/knight.cpp \
+    src/main.cpp \
+    src/pawn.cpp \
+    src/king.cpp \
+    src/queen.cpp \
+    src/rook.cpp
 
 HEADERS += \
-    bishop.hh \
-    chess.hh \
-    chessboard.hh \
-    chesspiece.hh \
-    knight.hh \
-    pawn.hh \
-    king.hh \
-    queen.hh \
-    rook.hh
+    include/bishop.hh \
+    include/chess.hh \
+    include/chessboard.hh \
+    include/chesspiece.hh \
+    include/knight.hh \
+    include/pawn.hh \
+    include/king.hh \
+    include/queen.hh \
+    include/rook.hh
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
