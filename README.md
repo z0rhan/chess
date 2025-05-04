@@ -1,3 +1,22 @@
+# Install and Run
+This program has been tested and run with qt6 and Linux Mint 22.1 x86_64.  
+To install qt, run in your terminal:
+```
+sudo apt install qtcreator git
+```
+This will install all the qt-related libraries needed and git also if you don't have it yet.
+Then run:
+```
+git clone https://github.com/z0rhan/chess
+cd chess
+mkdir build/bin build/obj
+qmake6 && make
+```
+To run the game, run:
+```
+build/bin/chess
+```
+
 # ♟️ How to Play the Chess Game
 
 ## Objective

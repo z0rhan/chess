@@ -1,13 +1,22 @@
-QT       += core gui
+TEMPLATE = app
+TARGET = chess
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# Set output directory for the final binary
+DESTDIR = $$PWD/build/bin
 
+# Set output directory for object files and MOC files
+OBJECTS_DIR = $$PWD/build/obj
+MOC_DIR = $$PWD/build/obj
+
+# Set the directory for resource .cpp file generated from .qrc
+RCC_DIR = $$PWD/build/obj
+
+# Add source and header files
 SOURCES += \
     src/bishop.cpp \
     src/chess.cpp \
@@ -18,23 +27,23 @@ SOURCES += \
     src/pawn.cpp \
     src/king.cpp \
     src/queen.cpp \
-    src/rook.cpp
+    src/rook.cpp \
+    src/mainwindow.cpp \
+    src/move_utils.cpp
 
 HEADERS += \
-    include/bishop.hh \
-    include/chess.hh \
-    include/chessboard.hh \
-    include/chesspiece.hh \
-    include/knight.hh \
-    include/pawn.hh \
-    include/king.hh \
-    include/queen.hh \
-    include/rook.hh
+    src/bishop.hh \
+    src/chess.hh \
+    src/chessboard.hh \
+    src/chesspiece.hh \
+    src/knight.hh \
+    src/pawn.hh \
+    src/king.hh \
+    src/queen.hh \
+    src/rook.hh \
+    src/mainwindow.hh \
+    src/move_utils.hh
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+# Add the resource file
+RESOURCES += chess_icons.qrc
 
-RESOURCES += \
-    chess_icons.qrc
