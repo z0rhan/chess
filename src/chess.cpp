@@ -1,3 +1,12 @@
+/* Author: Zorhan Salami
+ * Student Number: 153159921
+ * Email: zorhan.salami@tuni.fi
+ * ID: nkk362
+ *
+ * I have changed the implementation of reset_board()
+ * to setup chess piece in both way:
+ * White/Black can be both up and down now
+*/
 #include "chess.hh"
 
 Chess::Chess() {}
@@ -101,10 +110,10 @@ void Chess::start_game(ChessColor starting_player)
 {
     current_turn_ = starting_player;
     game_state_ = IN_PROGRESS;
-    reset_board();
+    reset_board(starting_player);
 }
 
-void Chess::reset_board()
+void Chess::reset_board(ChessColor startingPlayer)
 {
     // Clear all squares
     for (int i = 0; i < BOARD_SIZE; i++)
@@ -115,11 +124,59 @@ void Chess::reset_board()
         }
     }
 
+    if (startingPlayer == ChessColor::WHITE) {
+        for (int i = 0; i < BOARD_SIZE; i++)
+        {
+            shared_ptr<Pawn> whitePawn = make_shared<Pawn>(ChessColor::WHITE);
+            shared_ptr<Pawn> blackPawn = make_shared<Pawn>(ChessColor::BLACK);
+
+            whitePawn->setWhitePosition(startingPlayer);
+            blackPawn->setWhitePosition(startingPlayer);
+
+            set_piece(1, i, blackPawn);
+            set_piece(BOARD_SIZE-2, i, whitePawn);
+        }
+
+        // KINGS
+        set_piece(0, 4, make_shared<King>(ChessColor::BLACK));
+        set_piece(BOARD_SIZE-1, 4, make_shared<King>(ChessColor::WHITE));
+
+        // QUEENS
+        set_piece(0, 3, make_shared<Queen>(ChessColor::BLACK));
+        set_piece(BOARD_SIZE-1, 3, make_shared<Queen>(ChessColor::WHITE));
+
+        // ROOKS
+        set_piece(0, 0, make_shared<Rook>(ChessColor::BLACK));
+        set_piece(0, BOARD_SIZE-1, make_shared<Rook>(ChessColor::BLACK));
+        set_piece(BOARD_SIZE-1, 0, make_shared<Rook>(ChessColor::WHITE));
+        set_piece(BOARD_SIZE-1, BOARD_SIZE-1, make_shared<Rook>(ChessColor::WHITE));
+
+        // BISHOPS
+        set_piece(0, 2, make_shared<Bishop>(ChessColor::BLACK));
+        set_piece(0, BOARD_SIZE-3, make_shared<Bishop>(ChessColor::BLACK));
+        set_piece(BOARD_SIZE-1, 2, make_shared<Bishop>(ChessColor::WHITE));
+        set_piece(BOARD_SIZE-1, BOARD_SIZE-3, make_shared<Bishop>(ChessColor::WHITE));
+
+        // KNIGHTS
+        set_piece(0, 1, make_shared<Knight>(ChessColor::BLACK));
+        set_piece(0, BOARD_SIZE-2, make_shared<Knight>(ChessColor::BLACK));
+        set_piece(BOARD_SIZE-1, 1, make_shared<Knight>(ChessColor::WHITE));
+        set_piece(BOARD_SIZE-1, BOARD_SIZE-2, make_shared<Knight>(ChessColor::WHITE));
+
+        return;
+    }
+
     // PAWNS
     for (int i = 0; i < BOARD_SIZE; i++)
     {
-        set_piece(1, i, make_shared<Pawn>(ChessColor::WHITE));
-        set_piece(BOARD_SIZE-2, i, make_shared<Pawn>(ChessColor::BLACK));
+        shared_ptr<Pawn> whitePawn = make_shared<Pawn>(ChessColor::WHITE);
+        shared_ptr<Pawn> blackPawn = make_shared<Pawn>(ChessColor::BLACK);
+
+        whitePawn->setWhitePosition(startingPlayer);
+        blackPawn->setWhitePosition(startingPlayer);
+
+        set_piece(1, i, whitePawn);
+        set_piece(BOARD_SIZE-2, i, blackPawn);
     }
 
     // KINGS

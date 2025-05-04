@@ -1,3 +1,12 @@
+/*
+ * Author: Zorhan Salami
+ * Student Number: 153159921
+ * Email: zorhan.salami@tuni.fi
+ * ID: nkk362
+ *
+ * Modified the get_allowed_moves() so the direction of moves
+ * is determined on the basis of currentPosition
+ */
 #include "pawn.hh"
 
 Pawn::Pawn(ChessColor col): ChessPiece(col, PAWN, "pawn") {}
@@ -5,7 +14,13 @@ Pawn::Pawn(ChessColor col): ChessPiece(col, PAWN, "pawn") {}
 set<Coord> Pawn::get_allowed_moves(const ChessBoard &board) const
 {
     // Define which direction is forward
-    int direction = get_color() == WHITE ? 1 : -1;
+    int direction;
+
+    if (this->currentPosition == WhitePosition::WHITE_ABOVE) {
+        direction = get_color() == WHITE ? 1 : -1;
+    } else {
+        direction = get_color() == WHITE ? -1 : 1;
+    }
 
     set<Coord> moves;
 
@@ -40,5 +55,16 @@ set<Coord> Pawn::get_allowed_moves(const ChessBoard &board) const
     }
 
     return moves;
+}
+
+void Pawn::setWhitePosition(ChessColor startingColor)
+{
+    if (startingColor == ChessColor::WHITE) {
+        currentPosition = WhitePosition::WHITE_BELOW;
+
+        return;
+    }
+
+    currentPosition = WhitePosition::WHITE_ABOVE;
 }
 

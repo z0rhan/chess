@@ -16,7 +16,6 @@ public:
     virtual set<Coord> get_allowed_moves(ChessBoard const& board) const override;
 
 private:
-
 };
 
 #endif // KING_HH

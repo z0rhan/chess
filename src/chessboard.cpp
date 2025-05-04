@@ -2,11 +2,12 @@
 STUDENT: DO NOT MODIFY THIS FILE!
 */
 
-#include <memory>
-
 #include "chessboard.hh"
 
-ChessBoard::ChessBoard() {}
+#include <memory>
+
+ChessBoard::ChessBoard() {
+}
 
 shared_ptr<ChessPiece> ChessBoard::get_piece_at(const Coord &c) const
 {
@@ -44,4 +45,3 @@ bool ChessBoard::set_piece(Coord coord, shared_ptr<ChessPiece> piece)
 {
     return set_piece(coord.row, coord.col, piece);
 }
-

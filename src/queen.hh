@@ -1,7 +1,7 @@
 #ifndef QUEEN_HH
 #define QUEEN_HH
 
-#include "rook.hh"
+#include "chesspiece.hh"
 
 /**
  * @brief The Queen class

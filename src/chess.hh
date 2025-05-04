@@ -1,5 +1,13 @@
 /**
  * STUDENT: DO NOT MODIFY THIS FILE!
+ * Author: Zorhan Salami
+ * Student Number: 153159921
+ * Email: zorhan.salami@tuni.fi
+ * ID: nkk362
+ *
+ * I have made some minor changes in class Chess
+ * Modified reset_board() to accept a parameter ChessColor startingPlayer
+ * and setup the chessBoard according to startingPlayer
  */
 
 #ifndef CHESS_H
@@ -87,7 +95,7 @@ private:
 
     void change_turn();
 
-    void reset_board();
+    void reset_board(ChessColor startingPlayer);
 
     /**
      * Moves a piece from the source tile to a new position. If the coordinates are incorrect

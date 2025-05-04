@@ -1,7 +1,25 @@
+/*
+ * Author: Zorhan Salami
+ * Student Number: 153159921
+ * Email: zorhan.salami@tuni.fi
+ * ID: nkk362
+ *
+ * I have made some modifications in sub-class Pawn
+ * Introduced new enum class WhitePosition
+ * Introduced new private member currentPosition which stores
+ * enum class WhitePosition and helps to determine the direction
+ * for get_allowed_moves() for pawn
+ */
+
 #ifndef PAWN_H
 #define PAWN_H
 
 #include "chesspiece.hh"
+
+enum class WhitePosition {
+    WHITE_BELOW,
+    WHITE_ABOVE
+};
 
 /**
  * @brief The Pawn class
@@ -16,6 +34,10 @@ public:
     virtual ~Pawn() = default;
 
     virtual set<Coord> get_allowed_moves(ChessBoard const& board) const override;
+
+    void setWhitePosition(ChessColor startingColor);
+private:
+    WhitePosition currentPosition;
 };
 
 #endif // PAWN_H
