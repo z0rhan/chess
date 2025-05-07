@@ -19,41 +19,40 @@
 //------------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow{parent},
-    m_selecctedCoord(NULL_COORD)
+    m_selectedCoord(NULL_COORD)
 {
-    this->setupWidgets();
+    this->initializeWidgets();
 
-    this->setupLayouts();
+    this->initializeLayouts();
 
-    this->setupNewGame();
+    this->intializeNewGame();
 
-    this->setupBoardSquares();
+    this->initializeBoardSquares();
 
-    this->setupConnections();
+    this->initializeConnections();
 }
 
 //------------------------------------------------------------------------------
 MainWindow::~MainWindow()
 {
-    delete m_chessGame;
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::handleCliks(int row, int col)
+void MainWindow::handleClicks(int row, int col)
 {
     Coord clikedButton{row, col};
 
     // First click
-    if (m_selecctedCoord == NULL_COORD) {
+    if (m_selectedCoord == NULL_COORD) {
         if (!isValidClick(row, col)) {
             return;
         }
 
-        m_selecctedCoord = clikedButton;
+        m_selectedCoord = clikedButton;
 
         this->updateInfoText(InfoMessages::PIECE_SELECTED);
 
-        this->highlightPossibleMoves(m_selecctedCoord);
+        this->highlightPossibleMoves(m_selectedCoord);
 
         return;
     }
@@ -61,8 +60,8 @@ void MainWindow::handleCliks(int row, int col)
     // Second click
     this->resetHighlight();
 
-    QPushButton* firstButton = m_chessBoardButtons[m_selecctedCoord.row]
-                                                  [m_selecctedCoord.col];
+    QPushButton* firstButton = m_chessBoardButtons[m_selectedCoord.row]
+                                                  [m_selectedCoord.col];
 
     QPushButton* secondButton = m_chessBoardButtons[row][col];
 
@@ -73,7 +72,7 @@ void MainWindow::handleCliks(int row, int col)
         return;
     }
 
-    m_selecctedCoord = NULL_COORD;
+    m_selectedCoord = NULL_COORD;
 
     if (isGameFinished()) {
         for (auto row : m_chessBoardButtons) {
@@ -89,8 +88,7 @@ void MainWindow::handleCliks(int row, int col)
 //------------------------------------------------------------------------------
 void MainWindow::restartGame(ChessColor startingPlayer)
 {
-    delete m_chessGame;
-    m_chessGame = nullptr;
+    m_chessGame = make_unique<Chess>();
 
     for (int row = 0; row < BOARD_SIZE; row++) {
         for (int col = 0; col < BOARD_SIZE; col++) {
@@ -102,11 +100,11 @@ void MainWindow::restartGame(ChessColor startingPlayer)
         }
     }
 
-    this->setupNewGame(startingPlayer);
+    this->intializeNewGame(startingPlayer);
 
-    this->setupBoardSquares();
+    this->initializeBoardSquares();
 
-    m_selecctedCoord = NULL_COORD;
+    m_selectedCoord = NULL_COORD;
 
     if (sender() == m_restartButton) {
         this->updateInfoText(InfoMessages::RESTART_GAME);
@@ -130,14 +128,14 @@ void MainWindow::changeStartingColor()
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::setupNewGame(ChessColor startingPlayer)
+void MainWindow::intializeNewGame(ChessColor startingPlayer)
 {
-    m_chessGame = new Chess();
+    m_chessGame = make_unique<Chess>();
     m_chessGame->start_game(startingPlayer);
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::setupWidgets()
+void MainWindow::initializeWidgets()
 {
     // Initialize all widgets
     m_centralWidget = new QWidget(this);
@@ -161,7 +159,7 @@ void MainWindow::setupWidgets()
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::setupLayouts()
+void MainWindow::initializeLayouts()
 {
     // Initialize all layouts
     m_centralLayout = new QGridLayout(m_centralWidget);
@@ -185,30 +183,38 @@ void MainWindow::setupLayouts()
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::setupBoardSquares()
+void MainWindow::initializeBoardSquares()
 {
     for (int row = 0; row < BOARD_SIZE; row++) {
         for (int col = 0; col < BOARD_SIZE; col++) {
-
-            QString imagePath = this->getImagePath(row, col);
-
-            QPushButton* squareButton = new QPushButton(this);
-
-            squareButton->setFlat(false);
-
-            this->setButtonIcon(squareButton, imagePath);
-
-            squareButton->setSizePolicy(QSizePolicy::Expanding,
-                                        QSizePolicy::Expanding);
+            QPushButton* squareButton = createSquareButton(row, col);
 
             this->setChessPiece(squareButton,
                                 row, col);
+
         }
     }
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::setupConnections()
+QPushButton* MainWindow::createSquareButton(const int row, const int col)
+{
+    QString imagePath = this->getImagePath(row, col);
+
+    QPushButton* squareButton = new QPushButton(this);
+
+    squareButton->setFlat(false);
+
+    this->setButtonIcon(squareButton, imagePath);
+
+    squareButton->setSizePolicy(QSizePolicy::Expanding,
+                                QSizePolicy::Expanding);
+
+    return squareButton;
+}
+
+//------------------------------------------------------------------------------
+void MainWindow::initializeConnections()
 {
     connect(m_closeButton,
             &QPushButton::clicked,
@@ -273,7 +279,7 @@ void MainWindow::setChessPiece(QPushButton *piece,
             &QPushButton::clicked,
             this,
             [this, row, col] () {
-                handleCliks(row, col);
+                handleClicks(row, col);
             });
 
     this->m_chessBoardButtons[row][col] = piece;
@@ -286,8 +292,8 @@ bool MainWindow::updateGame(QPushButton *firstButton,
                             Coord dest)
 {
     shared_ptr<ChessPiece> selectedPiece = m_chessGame->get_board()
-                                           .get_piece_at(m_selecctedCoord.row,
-                                                         m_selecctedCoord.col);
+                                           .get_piece_at(m_selectedCoord.row,
+                                                         m_selectedCoord.col);
 
     shared_ptr<ChessPiece> destPiece = m_chessGame->get_board()
                                        .get_piece_at(dest.row,
@@ -297,23 +303,23 @@ bool MainWindow::updateGame(QPushButton *firstButton,
     if (destPiece && selectedPiece->get_color() == destPiece->get_color()) {
         this->updateInfoText(InfoMessages::PIECE_SELECTED_AGAIN);
 
-        m_selecctedCoord = dest;
+        m_selectedCoord = dest;
 
-        this->highlightPossibleMoves(m_selecctedCoord);
+        this->highlightPossibleMoves(m_selectedCoord);
 
         return false;
     }
 
     if(!m_chessGame->make_move(selectedPiece , dest)) {
-        m_selecctedCoord = NULL_COORD;
+        m_selectedCoord = NULL_COORD;
 
         this->updateInfoText(InfoMessages::INVALID_MOVE);
 
         return false;
     }
 
-    QString startImagePath = this->getImagePath(m_selecctedCoord.row,
-                                                m_selecctedCoord.col);
+    QString startImagePath = this->getImagePath(m_selectedCoord.row,
+                                                m_selectedCoord.col);
     QString destImagePath = this->getImagePath(dest.row, dest.col);
 
     this->setButtonIcon(firstButton, startImagePath);

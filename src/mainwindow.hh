@@ -63,7 +63,7 @@ private slots:
      * @param int row
      * @param int col
      */
-    void handleCliks(int row, int col);
+    void handleClicks(int row, int col);
 
     /**
      * @brief Slot to start the game from the startg agian
@@ -83,55 +83,62 @@ signals:
 
 private:
     // Widgets
-    QWidget*		m_centralWidget;
-    QWidget*		m_boardWidget;
-    QWidget*		m_buttonsWidget;
-    QWidget*		m_infoWidget;
+    QWidget*			m_centralWidget;
+    QWidget*			m_boardWidget;
+    QWidget*			m_buttonsWidget;
+    QWidget*			m_infoWidget;
 
     // Layouts
-    QGridLayout*	m_centralLayout;
-    QGridLayout*	m_boardLayout;
-    QGridLayout*	m_buttonsLayout;
-    QGridLayout*	m_infoLayout;
+    QGridLayout*		m_centralLayout;
+    QGridLayout*		m_boardLayout;
+    QGridLayout*		m_buttonsLayout;
+    QGridLayout*		m_infoLayout;
 
     // Buttons
-    QPushButton* 	m_closeButton;
-    QPushButton* 	m_restartButton;
-    QPushButton* 	m_whiteStart;
-    QPushButton* 	m_blackStart;
+    QPushButton* 		m_closeButton;
+    QPushButton* 		m_restartButton;
+    QPushButton* 		m_whiteStart;
+    QPushButton* 		m_blackStart;
 
     // Labels
-    QLabel* 		m_infoLabel;
+    QLabel* 			m_infoLabel;
 
     // Game interface
-    boardButtons 	m_chessBoardButtons;
-    Coord 			m_selecctedCoord;
-    Chess*			m_chessGame;
-    GameState		m_gameState;
+    boardButtons 		m_chessBoardButtons;
+    Coord 				m_selectedCoord;
+    unique_ptr<Chess>	m_chessGame;
+    GameState			m_gameState;
 
     /**
      * @brief Creates a new instance of Chess
      * @param ChessColor startingPlayer
      */
-    void 			setupNewGame(ChessColor startingPlayer = WHITE);
+    void 				intializeNewGame(ChessColor startingPlayer = WHITE);
 
     /**
      * @brief Creates and setups all necessary Widgets
      */
-    void 			setupWidgets();
+    void 				initializeWidgets();
 
     /**
      * @brief Creates and setups all necessary Layouts
      */
-    void 			setupLayouts();
+    void 				initializeLayouts();
+
     /**
      * @brief Creates and setups 64 buttons to act as the chessboard
      */
-    void 			setupBoardSquares();
+    void 				initializeBoardSquares();
+
+    /**
+     * @brief Creates and setups 64 buttons to act as the chessboard
+     */
+    QPushButton* 		createSquareButton(const int row,const int col);
+
     /**
      * @brief Setups all necessary connections between signals and slots
      */
-    void 			setupConnections();
+    void 				initializeConnections();
 
     /**
      * @brief Set the icon for the 64 buttons from setupBoardSquares according
@@ -139,8 +146,8 @@ private:
      * @param QPushButton* button
      * @param const QString& imagePath 
      */
-    void 			setButtonIcon(QPushButton* button,
-                                  const QString &imagePath);
+    void 				setButtonIcon(QPushButton* button,
+                                      const QString &imagePath);
 
     /**
      * @brief Creates the imagePath according to the Coord given
@@ -148,7 +155,7 @@ private:
      * @param const int col
      * @return Qstring as the imagePath
      */
-    QString 		getImagePath(const int row, const int col) const;
+    QString 			getImagePath(const int row, const int col) const;
 
     /**
      * @brief Adds the 64 buttons from setupBoardSquares to the proper location
@@ -158,8 +165,8 @@ private:
      * @param const int row
      * @param const int col
      */
-    void 			setChessPiece(QPushButton* piece,
-                                  const int row, const int col);
+    void 				setChessPiece(QPushButton* piece,
+                                      const int row, const int col);
 
     /**
      * @brief Calls Chess::make_move() to make a move in the game
@@ -170,32 +177,32 @@ private:
      * @param QPushButton* secondButton : destination button
      * @param Coord dest                : destination Coord
      */
-    bool            updateGame(QPushButton* firstButton,
-                               QPushButton* secondButton,
-                               Coord dest);
+    bool            	updateGame(QPushButton* firstButton,
+                                   QPushButton* secondButton,
+                                   Coord dest);
     /**
      * @brief Function to update the info message in m_infoLabel
      * @param InfoMessages message
      */
-    void 			updateInfoText(InfoMessages message);
+    void 				updateInfoText(InfoMessages message);
 
     /**
      * @brief Funcion to convert ChessColor to its appropriate string
      * @param ChessColor& color
      */
-    QString         colorToString(const ChessColor& color);
+    QString         	colorToString(const ChessColor& color);
 
     /**
      * @brief Function to highlight all possible moves of the piece that the
      *        user has selected
      * @param const Coord& selectedPosition
      */
-    void            highlightPossibleMoves(const Coord& selectedPosition);
+    void            	highlightPossibleMoves(const Coord& selectedPosition);
 
     /**
      * @brief Function to remove highlight for possible moves
      */
-    void 			resetHighlight();
+    void 				resetHighlight();
 
     /**
      * @brief Funcion to check if the selected button is valid or not
@@ -204,13 +211,13 @@ private:
      * @return false if the there is no piece or if the selected color
      *         is not the the current turn, true otherwise
      */
-    bool 			isValidClick(const int row, const int col) const;
+    bool 				isValidClick(const int row, const int col) const;
 
     /**
      * @brief Function to check if the game is finished or not
      * @return true if either ChessColor wins the game, false otherwise
      */
-    bool 			isGameFinished();
+    bool 				isGameFinished();
 
 };
 

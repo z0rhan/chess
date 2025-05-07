@@ -1,7 +1,8 @@
 #build-directory
 build/
 
-# Qt-files
+# Qt-related
 *.user
 Makefile
 .qmake.stash
+.qtc_clangd/

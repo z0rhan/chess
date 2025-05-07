@@ -1,8 +1,12 @@
 # Install and Run
-This program has been tested and run with qt6 and Linux Mint 22.1 x86_64.  
-To install qt, run in your terminal:
+This program has been tested and run with qt6 in Arch Linux x86_64 Linux Mint 22.1 x86_64.  
+To install qt Arch Linux, run in your terminal:
 ```
-sudo apt install qtcreator git
+sudo pacman -S qt6-base git
+```
+For Linux Mint,
+```
+sudo apt install qt6-base-dev
 ```
 This will install all the qt-related libraries needed and git also if you don't have it yet.
 Then run:
