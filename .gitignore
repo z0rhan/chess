@@ -6,3 +6,7 @@ build/
 Makefile
 .qmake.stash
 .qtc_clangd/
+
+# LSP related
+.cache/
+compile_commands.json

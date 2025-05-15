@@ -13,8 +13,15 @@ Then run:
 ```
 git clone https://github.com/z0rhan/chess
 cd chess
-mkdir build/bin build/obj
 qmake6 && make
+```
+
+Alternatively, use CMake as:
+```
+mkdir build
+cd build
+cmake ..
+make
 ```
 To run the game, run:
 ```

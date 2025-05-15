@@ -73,11 +73,6 @@ private slots:
      */
     void restartGame(ChessColor startingPlayer = WHITE);
 
-    /**
-     * @brief Slot to handle click events for m_whiteStart and m_blackStart
-     *        Starts a new game allowing white or black to start accordingly
-     */
-    void changeStartingColor();
 
 signals:
 

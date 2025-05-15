@@ -12,6 +12,11 @@ STUDENT: DO NOT MODIFY THIS FILE!
 
 using namespace std;
 
+enum class WhitePosition {
+    WHITE_BELOW,
+    WHITE_ABOVE
+};
+
 
 /**
  * @brief The Coord class
@@ -81,6 +86,7 @@ public:
      */
     bool set_piece(int row, int col, shared_ptr<ChessPiece> piece);
     bool set_piece(Coord coord, shared_ptr<ChessPiece> piece);
+
 
 private:
     Board board_;

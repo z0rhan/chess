@@ -76,12 +76,18 @@ public:
      */
     void set_position(Coord pos);
 
+    /**
+     * @brief increases moves_ by 1
+     */
+    void increaseMoves();
+
 private:
     // Attributes
     ChessColor color_;
     PieceType type_;
     string name_;
     Coord position_;
+    unsigned int moves_;
 };
 
 #endif // CHESSPIECE_H

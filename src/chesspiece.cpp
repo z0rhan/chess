@@ -30,3 +30,7 @@ string ChessPiece::get_name() const
 {
     return name_;
 }
+
+void ChessPiece::increaseMoves() {
+    this->moves_++;
+}

@@ -112,22 +112,6 @@ void MainWindow::restartGame(ChessColor startingPlayer)
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::changeStartingColor()
-{
-    if (sender() == m_blackStart) {
-        this->restartGame(ChessColor::BLACK);
-
-        this->updateInfoText(InfoMessages::CURRENT_TURN);
-
-        return;
-    }
-
-    this->restartGame();
-
-    this->updateInfoText(InfoMessages::CURRENT_TURN);
-}
-
-//------------------------------------------------------------------------------
 void MainWindow::intializeNewGame(ChessColor startingPlayer)
 {
     m_chessGame = make_unique<Chess>();
@@ -145,8 +129,6 @@ void MainWindow::initializeWidgets()
 
     m_closeButton = new QPushButton("Exit", this);
     m_restartButton = new QPushButton("Restart Game", this);
-    m_whiteStart = new QPushButton("Start with White", this);
-    m_blackStart = new QPushButton("Start with Black", this);
 
     m_infoLabel = new QLabel("WELCOME\n"
                              "White to move",
@@ -174,8 +156,6 @@ void MainWindow::initializeLayouts()
 
     m_buttonsLayout->addWidget(m_restartButton, 0, 0);
     m_buttonsLayout->addWidget(m_closeButton, 0, 1);
-    m_buttonsLayout->addWidget(m_whiteStart, 1, 0);
-    m_buttonsLayout->addWidget(m_blackStart, 1, 1);
 
     m_infoLayout->addWidget(m_infoLabel, 0, 0);
 
@@ -227,16 +207,6 @@ void MainWindow::initializeConnections()
             [this] () {
                 restartGame();
             });
-
-    connect(m_blackStart,
-            &QPushButton::clicked,
-            this,
-            &MainWindow::changeStartingColor);
-
-    connect(m_whiteStart,
-            &QPushButton::clicked,
-            this,
-            &MainWindow::changeStartingColor);
 }
 
 //------------------------------------------------------------------------------

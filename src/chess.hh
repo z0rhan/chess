@@ -95,7 +95,7 @@ private:
 
     void change_turn();
 
-    void reset_board(ChessColor startingPlayer);
+    void reset_board();
 
     /**
      * Moves a piece from the source tile to a new position. If the coordinates are incorrect

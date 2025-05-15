@@ -14,13 +14,8 @@ Pawn::Pawn(ChessColor col): ChessPiece(col, PAWN, "pawn") {}
 set<Coord> Pawn::get_allowed_moves(const ChessBoard &board) const
 {
     // Define which direction is forward
-    int direction;
-
-    if (this->currentPosition == WhitePosition::WHITE_ABOVE) {
-        direction = get_color() == WHITE ? 1 : -1;
-    } else {
-        direction = get_color() == WHITE ? -1 : 1;
-    }
+    int direction = this->get_color() == ChessColor::WHITE ?
+                    -1 : 1;
 
     set<Coord> moves;
 
@@ -55,16 +50,5 @@ set<Coord> Pawn::get_allowed_moves(const ChessBoard &board) const
     }
 
     return moves;
-}
-
-void Pawn::setWhitePosition(ChessColor startingColor)
-{
-    if (startingColor == ChessColor::WHITE) {
-        currentPosition = WhitePosition::WHITE_BELOW;
-
-        return;
-    }
-
-    currentPosition = WhitePosition::WHITE_ABOVE;
 }
 

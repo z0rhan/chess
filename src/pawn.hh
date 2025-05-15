@@ -16,11 +16,6 @@
 
 #include "chesspiece.hh"
 
-enum class WhitePosition {
-    WHITE_BELOW,
-    WHITE_ABOVE
-};
-
 /**
  * @brief The Pawn class
  * The pawn moves forward (only in the direction of the enemy's side) one square at a time.
@@ -35,9 +30,7 @@ public:
 
     virtual set<Coord> get_allowed_moves(ChessBoard const& board) const override;
 
-    void setWhitePosition(ChessColor startingColor);
 private:
-    WhitePosition currentPosition;
 };
 
 #endif // PAWN_H
