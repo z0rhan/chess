@@ -57,6 +57,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 
+signals:
+    void windowClosed();
+
 private slots:
     /**
      * @brief Slot to handle click events on the m_chessBoardButtons
@@ -72,6 +75,8 @@ private slots:
      * @param ChessColor startingPlayer: the starting color for next game
      */
     void restartGame(ChessColor startingPlayer = WHITE);
+
+    void closeEvent(QCloseEvent* event);
 
 
 signals:
@@ -172,9 +177,7 @@ private:
      * @param QPushButton* secondButton : destination button
      * @param Coord dest                : destination Coord
      */
-    bool            	updateGame(QPushButton* firstButton,
-                                   QPushButton* secondButton,
-                                   Coord dest);
+    bool            	updateGame(Coord dest);
     /**
      * @brief Function to update the info message in m_infoLabel
      * @param InfoMessages message

@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
     src/queen.cpp
     src/rook.cpp
     src/mainwindow.cpp
+    src/menuwindow.cpp
     src/move_utils.cpp
 )
 

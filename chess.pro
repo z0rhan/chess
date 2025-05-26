@@ -29,7 +29,8 @@ SOURCES += \
     src/queen.cpp \
     src/rook.cpp \
     src/mainwindow.cpp \
-    src/move_utils.cpp
+    src/move_utils.cpp \
+    src/menuwindow.cpp
 
 HEADERS += \
     src/bishop.hh \
@@ -42,7 +43,8 @@ HEADERS += \
     src/queen.hh \
     src/rook.hh \
     src/mainwindow.hh \
-    src/move_utils.hh
+    src/move_utils.hh \
+    src/menuwindow.hh
 
 # Add the resource file
 RESOURCES += chess_icons.qrc

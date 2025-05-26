@@ -16,6 +16,8 @@
 #include "mainwindow.hh"
 #include "chesspiece.hh"
 
+#include <QCloseEvent>
+
 //------------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow{parent}, m_selectedCoord(NULL_COORD)
@@ -59,12 +61,7 @@ void MainWindow::handleClicks(int row, int col)
     // Second click
     this->resetHighlight();
 
-    QPushButton *firstButton =
-        m_chessBoardButtons[m_selectedCoord.row][m_selectedCoord.col];
-
-    QPushButton *secondButton = m_chessBoardButtons[row][col];
-
-    if (!this->updateGame(firstButton, secondButton, clikedButton))
+    if (!this->updateGame(clikedButton))
     {
         return;
     }
@@ -200,8 +197,7 @@ void MainWindow::initializeConnections()
 {
     connect(m_closeButton, &QPushButton::clicked, this, &QMainWindow::close);
 
-    connect(m_restartButton, &QPushButton::clicked, this,
-            [this]() { restartGame(); });
+    connect(m_restartButton, &QPushButton::clicked, this, [this]() { restartGame(); });
 }
 
 //------------------------------------------------------------------------------
@@ -248,8 +244,7 @@ void MainWindow::setChessPiece(QPushButton *piece, const int row, const int col)
 }
 
 //------------------------------------------------------------------------------
-bool MainWindow::updateGame(QPushButton *firstButton, QPushButton *secondButton,
-                            Coord dest)
+bool MainWindow::updateGame(Coord dest)
 {
     shared_ptr<ChessPiece> selectedPiece =
         m_chessGame->get_board().get_piece_at(m_selectedCoord.row,
@@ -404,4 +399,10 @@ bool MainWindow::isGameFinished()
     }
 
     return false;
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    emit windowClosed();
+    QMainWindow::closeEvent(event);
 }

@@ -16,14 +16,33 @@
  */
 
 #include "mainwindow.hh"
+#include "menuwindow.hh"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    MainWindow mainwindow;
+    MenuWindow menuwindow;
+
+    QObject::connect(&menuwindow, &MenuWindow::startGame, [&]()
+    {
+        mainwindow.show();
+        mainwindow.raise();
+        mainwindow.activateWindow();
+        menuwindow.close();
+    });
+
+
+    QObject::connect(&mainwindow, &MainWindow::windowClosed, [&]()
+    {
+        menuwindow.show();
+        menuwindow.raise();
+        menuwindow.activateWindow();
+    });
+
+    menuwindow.show();
 
     return a.exec();
 }
