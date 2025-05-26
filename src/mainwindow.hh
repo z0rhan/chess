@@ -123,7 +123,7 @@ private:
     /**
      * @brief Creates and setups 64 buttons to act as the chessboard
      */
-    void 				initializeBoardSquares();
+    void 				renderBoardSquares();
 
     /**
      * @brief Creates and setups 64 buttons to act as the chessboard

@@ -4,33 +4,21 @@ STUDENT: DO NOT MODIFY THIS FILE!
 
 #include "chesspiece.hh"
 
-ChessPiece::ChessPiece(ChessColor color, PieceType type, string name): color_(color), type_(type), name_(name) {}
-
-ChessColor ChessPiece::get_color() const
+ChessPiece::ChessPiece(ChessColor color, PieceType type, string name)
+    : color_(color), type_(type), name_(name)
 {
-    return color_;
 }
 
-PieceType ChessPiece::get_type() const
-{
-    return type_;
-}
+ChessColor ChessPiece::get_color() const { return color_; }
 
-Coord ChessPiece::get_position() const
-{
-    return position_;
-}
+PieceType ChessPiece::get_type() const { return type_; }
 
-void ChessPiece::set_position(Coord pos)
-{
-    position_ = pos;
-}
+Coord ChessPiece::get_position() const { return position_; }
 
-string ChessPiece::get_name() const
-{
-    return name_;
-}
+void ChessPiece::set_position(Coord pos) { position_ = pos; }
 
-void ChessPiece::increaseMoves() {
-    this->moves_++;
-}
+string ChessPiece::get_name() const { return name_; }
+
+void ChessPiece::increaseMovesCount() { this->moves_++; }
+
+unsigned int ChessPiece::getMovesCount() const { return moves_; }

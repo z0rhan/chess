@@ -16,6 +16,12 @@ public:
     virtual set<Coord> get_allowed_moves(ChessBoard const& board) const override;
 
 private:
+    void check_move(const ChessBoard &board, const Coord &dest, set<Coord> &moves) const;
+
+    bool canCastleKingSide(int& row, int& col, const ChessBoard& board) const;
+    bool canCastleQueenSide(int& row, int& col, const ChessBoard& board) const;
+
+    void addMovesForCastling(int& row, int& col, const ChessBoard& board, set<Coord>& moves) const;
 };
 
 #endif // KING_HH

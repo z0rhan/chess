@@ -10,3 +10,6 @@ Makefile
 # LSP related
 .cache/
 compile_commands.json
+
+# Formatter
+.clang-format

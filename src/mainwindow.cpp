@@ -17,9 +17,8 @@
 #include "chesspiece.hh"
 
 //------------------------------------------------------------------------------
-MainWindow::MainWindow(QWidget *parent):
-    QMainWindow{parent},
-    m_selectedCoord(NULL_COORD)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow{parent}, m_selectedCoord(NULL_COORD)
 {
     this->initializeWidgets();
 
@@ -27,15 +26,13 @@ MainWindow::MainWindow(QWidget *parent):
 
     this->intializeNewGame();
 
-    this->initializeBoardSquares();
+    this->renderBoardSquares();
 
     this->initializeConnections();
 }
 
 //------------------------------------------------------------------------------
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow() {}
 
 //------------------------------------------------------------------------------
 void MainWindow::handleClicks(int row, int col)
@@ -43,8 +40,10 @@ void MainWindow::handleClicks(int row, int col)
     Coord clikedButton{row, col};
 
     // First click
-    if (m_selectedCoord == NULL_COORD) {
-        if (!isValidClick(row, col)) {
+    if (m_selectedCoord == NULL_COORD)
+    {
+        if (!isValidClick(row, col))
+        {
             return;
         }
 
@@ -60,23 +59,24 @@ void MainWindow::handleClicks(int row, int col)
     // Second click
     this->resetHighlight();
 
-    QPushButton* firstButton = m_chessBoardButtons[m_selectedCoord.row]
-                                                  [m_selectedCoord.col];
+    QPushButton *firstButton =
+        m_chessBoardButtons[m_selectedCoord.row][m_selectedCoord.col];
 
-    QPushButton* secondButton = m_chessBoardButtons[row][col];
+    QPushButton *secondButton = m_chessBoardButtons[row][col];
 
-    if (!this->updateGame(firstButton,
-                          secondButton,
-                          clikedButton))
+    if (!this->updateGame(firstButton, secondButton, clikedButton))
     {
         return;
     }
 
     m_selectedCoord = NULL_COORD;
 
-    if (isGameFinished()) {
-        for (auto row : m_chessBoardButtons) {
-            for (auto button : row) {
+    if (isGameFinished())
+    {
+        for (auto row : m_chessBoardButtons)
+        {
+            for (auto button : row)
+            {
                 button->setDisabled(true);
             }
         }
@@ -90,9 +90,12 @@ void MainWindow::restartGame(ChessColor startingPlayer)
 {
     m_chessGame = make_unique<Chess>();
 
-    for (int row = 0; row < BOARD_SIZE; row++) {
-        for (int col = 0; col < BOARD_SIZE; col++) {
-            if (m_chessBoardButtons[row][col]) {
+    for (int row = 0; row < BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
+            if (m_chessBoardButtons[row][col])
+            {
                 m_boardLayout->removeWidget(m_chessBoardButtons[row][col]);
                 m_chessBoardButtons[row][col]->deleteLater();
                 m_chessBoardButtons[row][col] = nullptr;
@@ -102,11 +105,12 @@ void MainWindow::restartGame(ChessColor startingPlayer)
 
     this->intializeNewGame(startingPlayer);
 
-    this->initializeBoardSquares();
+    this->renderBoardSquares();
 
     m_selectedCoord = NULL_COORD;
 
-    if (sender() == m_restartButton) {
+    if (sender() == m_restartButton)
+    {
         this->updateInfoText(InfoMessages::RESTART_GAME);
     }
 }
@@ -124,7 +128,7 @@ void MainWindow::initializeWidgets()
     // Initialize all widgets
     m_centralWidget = new QWidget(this);
     m_boardWidget = new QWidget(this);
-    m_buttonsWidget= new QWidget(this);
+    m_buttonsWidget = new QWidget(this);
     m_infoWidget = new QWidget(this);
 
     m_closeButton = new QPushButton("Exit", this);
@@ -137,7 +141,6 @@ void MainWindow::initializeWidgets()
     this->setCentralWidget(m_centralWidget);
 
     m_boardWidget->setMaximumSize(640, 640);
-
 }
 
 //------------------------------------------------------------------------------
@@ -146,7 +149,7 @@ void MainWindow::initializeLayouts()
     // Initialize all layouts
     m_centralLayout = new QGridLayout(m_centralWidget);
     m_boardLayout = new QGridLayout(m_boardWidget);
-    m_buttonsLayout= new QGridLayout(m_buttonsWidget);
+    m_buttonsLayout = new QGridLayout(m_buttonsWidget);
     m_infoLayout = new QGridLayout(m_infoWidget);
 
     // Add the widgets to the layouts
@@ -163,32 +166,31 @@ void MainWindow::initializeLayouts()
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::initializeBoardSquares()
+void MainWindow::renderBoardSquares()
 {
-    for (int row = 0; row < BOARD_SIZE; row++) {
-        for (int col = 0; col < BOARD_SIZE; col++) {
-            QPushButton* squareButton = createSquareButton(row, col);
+    for (int row = 0; row < BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
+            QPushButton *squareButton = createSquareButton(row, col);
 
-            this->setChessPiece(squareButton,
-                                row, col);
-
+            this->setChessPiece(squareButton, row, col);
         }
     }
 }
 
 //------------------------------------------------------------------------------
-QPushButton* MainWindow::createSquareButton(const int row, const int col)
+QPushButton *MainWindow::createSquareButton(const int row, const int col)
 {
     QString imagePath = this->getImagePath(row, col);
 
-    QPushButton* squareButton = new QPushButton(this);
+    QPushButton *squareButton = new QPushButton(this);
 
     squareButton->setFlat(false);
 
     this->setButtonIcon(squareButton, imagePath);
 
-    squareButton->setSizePolicy(QSizePolicy::Expanding,
-                                QSizePolicy::Expanding);
+    squareButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     return squareButton;
 }
@@ -196,17 +198,10 @@ QPushButton* MainWindow::createSquareButton(const int row, const int col)
 //------------------------------------------------------------------------------
 void MainWindow::initializeConnections()
 {
-    connect(m_closeButton,
-            &QPushButton::clicked,
-            this,
-            &QMainWindow::close);
+    connect(m_closeButton, &QPushButton::clicked, this, &QMainWindow::close);
 
-    connect(m_restartButton,
-            &QPushButton::clicked,
-            this,
-            [this] () {
-                restartGame();
-            });
+    connect(m_restartButton, &QPushButton::clicked, this,
+            [this]() { restartGame(); });
 }
 
 //------------------------------------------------------------------------------
@@ -223,12 +218,13 @@ void MainWindow::setButtonIcon(QPushButton *button, const QString &imagePath)
 //------------------------------------------------------------------------------
 QString MainWindow::getImagePath(const int row, const int col) const
 {
-    shared_ptr<ChessPiece> piece = m_chessGame->get_board()
-                                   .get_piece_at(row, col);
+    shared_ptr<ChessPiece> piece =
+        m_chessGame->get_board().get_piece_at(row, col);
 
     QString squareColor = (row + col) % 2 == 0 ? "bl" : "wt";
 
-    if (!piece) {
+    if (!piece)
+    {
         return QString(":pieces/empty-%1.png").arg(squareColor);
     }
 
@@ -236,41 +232,35 @@ QString MainWindow::getImagePath(const int row, const int col) const
     QString pieceName = QString::fromStdString(piece->get_name());
 
     return QString(":pieces/%1-%2-on-%3.png")
-                    .arg(pieceColor)
-                    .arg(pieceName)
-                    .arg(squareColor);
+        .arg(pieceColor)
+        .arg(pieceName)
+        .arg(squareColor);
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::setChessPiece(QPushButton *piece,
-                               const int row, const int col)
+void MainWindow::setChessPiece(QPushButton *piece, const int row, const int col)
 {
-    connect(piece,
-            &QPushButton::clicked,
-            this,
-            [this, row, col] () {
-                handleClicks(row, col);
-            });
+    connect(piece, &QPushButton::clicked, this,
+            [this, row, col]() { handleClicks(row, col); });
 
     this->m_chessBoardButtons[row][col] = piece;
     this->m_boardLayout->addWidget(piece, row, col);
 }
 
 //------------------------------------------------------------------------------
-bool MainWindow::updateGame(QPushButton *firstButton,
-                            QPushButton *secondButton,
+bool MainWindow::updateGame(QPushButton *firstButton, QPushButton *secondButton,
                             Coord dest)
 {
-    shared_ptr<ChessPiece> selectedPiece = m_chessGame->get_board()
-                                           .get_piece_at(m_selectedCoord.row,
-                                                         m_selectedCoord.col);
+    shared_ptr<ChessPiece> selectedPiece =
+        m_chessGame->get_board().get_piece_at(m_selectedCoord.row,
+                                              m_selectedCoord.col);
 
-    shared_ptr<ChessPiece> destPiece = m_chessGame->get_board()
-                                       .get_piece_at(dest.row,
-                                                     dest.col);
+    shared_ptr<ChessPiece> destPiece =
+        m_chessGame->get_board().get_piece_at(dest.row, dest.col);
 
     // If same color is selected, update m_selectedCoord
-    if (destPiece && selectedPiece->get_color() == destPiece->get_color()) {
+    if (destPiece && selectedPiece->get_color() == destPiece->get_color())
+    {
         this->updateInfoText(InfoMessages::PIECE_SELECTED_AGAIN);
 
         m_selectedCoord = dest;
@@ -280,7 +270,8 @@ bool MainWindow::updateGame(QPushButton *firstButton,
         return false;
     }
 
-    if(!m_chessGame->make_move(selectedPiece , dest)) {
+    if (!m_chessGame->make_move(selectedPiece, dest))
+    {
         m_selectedCoord = NULL_COORD;
 
         this->updateInfoText(InfoMessages::INVALID_MOVE);
@@ -288,12 +279,7 @@ bool MainWindow::updateGame(QPushButton *firstButton,
         return false;
     }
 
-    QString startImagePath = this->getImagePath(m_selectedCoord.row,
-                                                m_selectedCoord.col);
-    QString destImagePath = this->getImagePath(dest.row, dest.col);
-
-    this->setButtonIcon(firstButton, startImagePath);
-    this->setButtonIcon(secondButton, destImagePath);
+    renderBoardSquares();
 
     this->updateInfoText(InfoMessages::SUCCESSFUL_MOVE);
 
@@ -303,30 +289,33 @@ bool MainWindow::updateGame(QPushButton *firstButton,
 //------------------------------------------------------------------------------
 void MainWindow::updateInfoText(InfoMessages message)
 {
-    switch (message) {
+    switch (message)
+    {
     case InfoMessages::CURRENT_TURN:
-        m_infoLabel->setText(QString("%1 to move")
-                             .arg(this->colorToString(
-                                  m_chessGame->get_current_turn())));
+        m_infoLabel->setText(
+            QString("%1 to move")
+                .arg(this->colorToString(m_chessGame->get_current_turn())));
         break;
 
     case InfoMessages::PIECE_SELECTED:
-        m_infoLabel->setText(QString("%1 has selected")
-                             .arg(this->colorToString(
-                                  m_chessGame->get_current_turn())));
+        m_infoLabel->setText(
+            QString("%1 has selected")
+                .arg(this->colorToString(m_chessGame->get_current_turn())));
         break;
 
     case InfoMessages::PIECE_SELECTED_AGAIN:
-        m_infoLabel->setText(QString("%1 has selected again")
-                             .arg(this->colorToString(
-                                  m_chessGame->get_current_turn())));
+        m_infoLabel->setText(
+            QString("%1 has selected again")
+                .arg(this->colorToString(m_chessGame->get_current_turn())));
         break;
 
     // String formed is opposite since this is called after move is made
     case InfoMessages::SUCCESSFUL_MOVE:
-        m_infoLabel->setText(QString("Successful move by %1")
-                             .arg(m_chessGame->get_current_turn() ==
-                                  ChessColor::BLACK ? "White" : "Black"));
+        m_infoLabel->setText(
+            QString("Successful move by %1")
+                .arg(m_chessGame->get_current_turn() == ChessColor::BLACK
+                         ? "White"
+                         : "Black"));
         break;
 
     case InfoMessages::INVALID_MOVE:
@@ -334,10 +323,10 @@ void MainWindow::updateInfoText(InfoMessages message)
         break;
 
     case InfoMessages::GAME_FINISHED:
-        m_infoLabel->setText(QString("Congratulations, %1 won the game\n"
-                                     "Please start a new game")
-                                     .arg(m_gameState == GameState::BLACK_WIN ?
-                                          "Black" : "White"));
+        m_infoLabel->setText(
+            QString("Congratulations, %1 won the game\n"
+                    "Please start a new game")
+                .arg(m_gameState == GameState::BLACK_WIN ? "Black" : "White"));
         break;
 
     case InfoMessages::RESTART_GAME:
@@ -352,17 +341,20 @@ void MainWindow::updateInfoText(InfoMessages message)
 }
 
 //------------------------------------------------------------------------------
-QString MainWindow::colorToString(const ChessColor& color) {
+QString MainWindow::colorToString(const ChessColor &color)
+{
     return color == ChessColor::BLACK ? "Black" : "White";
 }
 
 //------------------------------------------------------------------------------
-void MainWindow::highlightPossibleMoves(const Coord& selectedPosition) {
+void MainWindow::highlightPossibleMoves(const Coord &selectedPosition)
+{
     ChessBoard board = m_chessGame->get_board();
-    set<Coord> moves = board
-                       .get_piece_at(selectedPosition)->get_allowed_moves(board);
+    set<Coord> moves =
+        board.get_piece_at(selectedPosition)->get_allowed_moves(board);
 
-    for (const auto [row, col] : moves) {
+    for (const auto [row, col] : moves)
+    {
         m_chessBoardButtons[row][col]->setStyleSheet(c_highlightSquare);
     }
 }
@@ -371,8 +363,10 @@ void MainWindow::highlightPossibleMoves(const Coord& selectedPosition) {
 void MainWindow::resetHighlight()
 {
 
-    for (int row = 0; row < BOARD_SIZE; row++) {
-        for (int col = 0; col < BOARD_SIZE; col++) {
+    for (int row = 0; row < BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
             m_chessBoardButtons[row][col]->setStyleSheet(c_noHighlight);
         }
     }
@@ -381,14 +375,16 @@ void MainWindow::resetHighlight()
 //------------------------------------------------------------------------------
 bool MainWindow::isValidClick(const int row, const int col) const
 {
-    shared_ptr<ChessPiece> clickedPiece = m_chessGame->get_board()
-                                                       .get_piece_at(row, col);
+    shared_ptr<ChessPiece> clickedPiece =
+        m_chessGame->get_board().get_piece_at(row, col);
 
-    if (!clickedPiece) {
+    if (!clickedPiece)
+    {
         return false;
     }
 
-    if (m_chessGame->get_current_turn() != clickedPiece->get_color()) {
+    if (m_chessGame->get_current_turn() != clickedPiece->get_color())
+    {
         return false;
     }
 
@@ -400,7 +396,8 @@ bool MainWindow::isGameFinished()
 {
     m_gameState = m_chessGame->get_game_state();
 
-    if (m_gameState != GameState::IN_PROGRESS) {
+    if (m_gameState != GameState::IN_PROGRESS)
+    {
         this->updateInfoText(InfoMessages::GAME_FINISHED);
 
         return true;

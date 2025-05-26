@@ -1,9 +1,7 @@
 /**
  * STUDENT: DO NOT MODIFY THIS FILE!
  * Author: Zorhan Salami
- * Student Number: 153159921
  * Email: zorhan.salami@tuni.fi
- * ID: nkk362
  *
  * I have made some minor changes in class Chess
  * Modified reset_board() to accept a parameter ChessColor startingPlayer
@@ -13,23 +11,25 @@
 #ifndef CHESS_H
 #define CHESS_H
 
-#include "chessboard.hh"
-#include "queen.hh"
-#include "king.hh"
-#include "rook.hh"
-#include "knight.hh"
 #include "bishop.hh"
+#include "chessboard.hh"
+#include "king.hh"
+#include "knight.hh"
 #include "pawn.hh"
+#include "queen.hh"
+#include "rook.hh"
 
-enum GameState {
+enum GameState
+{
     IN_PROGRESS,
     BLACK_WIN,
     WHITE_WIN
 };
 
-
-// Describes an attempted move and whether it was made or not. Used internally by the Chess class.
-struct Move {
+// Describes an attempted move and whether it was made or not. Used internally
+// by the Chess class.
+struct Move
+{
     // Was the move made or not?
     bool moved;
 
@@ -46,12 +46,12 @@ struct Move {
 
 /**
  * @brief The Chess class
- * The chess class represents a game of chess. It keeps track of the board state and
- * whose turn it is. It also has a method for making a move.
+ * The chess class represents a game of chess. It keeps track of the board state
+ * and whose turn it is. It also has a method for making a move.
  */
 class Chess
 {
-public:
+  public:
     Chess();
 
     /**
@@ -67,15 +67,16 @@ public:
     ChessBoard get_board() const;
 
     /**
-     * @brief get_game_state Getter for the current game state, in progress or who won.
+     * @brief get_game_state Getter for the current game state, in progress or
+     * who won.
      * @return GameState
      */
     GameState get_game_state() const;
 
     /**
-     * @brief make_move Makes a move in the game of chess. If the move is illegal, meaning that
-     * the game is over, it is the other player's turn, or it is not an allowed move by the piece,
-     * the move is not made.
+     * @brief make_move Makes a move in the game of chess. If the move is
+     * illegal, meaning that the game is over, it is the other player's turn, or
+     * it is not an allowed move by the piece, the move is not made.
      * @param piece The piece to move
      * @param dest The destination of the move
      * @return true if the move was made, false otherwise.
@@ -88,7 +89,8 @@ public:
      */
     void start_game(ChessColor starting_player = WHITE);
 
-private:
+
+  private:
     ChessColor current_turn_;
     ChessBoard board_;
     GameState game_state_;
@@ -98,8 +100,8 @@ private:
     void reset_board();
 
     /**
-     * Moves a piece from the source tile to a new position. If the coordinates are incorrect
-     * or there is no piece at source, the move is not made.
+     * Moves a piece from the source tile to a new position. If the coordinates
+     * are incorrect or there is no piece at source, the move is not made.
      * @param start the starting position of the move
      * @param end the ending position of the move
      * @return The details of the chess move.
@@ -108,6 +110,8 @@ private:
 
     void set_piece(Coord coord, shared_ptr<ChessPiece> piece);
     void set_piece(int row, int col, shared_ptr<ChessPiece> piece);
+
+    void castleIfNeeded(const Coord& src, const Coord& dest);
 };
 
 #endif // CHESS_H

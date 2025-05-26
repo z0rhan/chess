@@ -5,23 +5,25 @@ STUDENT: DO NOT MODIFY THIS FILE!
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
-#include <string>
-#include <set>
-#include <utility>
 #include <memory>
+#include <set>
+#include <string>
+#include <utility>
 
 #include "chessboard.hh"
 
 using namespace std;
 
 // The two colors in chess used to identify the two sides.
-enum ChessColor {
+enum ChessColor
+{
     WHITE,
     BLACK
 };
 
 // The different types of chess pieces.
-enum PieceType {
+enum PieceType
+{
     PAWN,
     ROOK,
     KING,
@@ -44,7 +46,7 @@ public:
      * @param board The current state of the chess board
      * @return the set of coordinates where the piece can move
      */
-    virtual set<Coord> get_allowed_moves(ChessBoard const& board) const = 0;
+    virtual set<Coord> get_allowed_moves(ChessBoard const &board) const = 0;
 
     /**
      * @brief get_name Get the name of the piece.
@@ -79,7 +81,9 @@ public:
     /**
      * @brief increases moves_ by 1
      */
-    void increaseMoves();
+    void increaseMovesCount();
+
+    unsigned int getMovesCount() const;
 
 private:
     // Attributes
@@ -87,7 +91,7 @@ private:
     PieceType type_;
     string name_;
     Coord position_;
-    unsigned int moves_;
+    unsigned int moves_ = 0;
 };
 
 #endif // CHESSPIECE_H
